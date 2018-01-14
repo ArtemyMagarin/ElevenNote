@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>
+   <a href="{% url 'notes:update' note.id %}">{{ note.title }}</a><br />
+   {{ note.body | safe }}
+</p>
+<hr />
+
+{% endblock %}
