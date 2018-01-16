@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block extra_head %}
+{% load staticfiles %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "elevennote/note.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div id="noteslist" class="col-4 custom-scroll" style="overflow-y: scroll; height: 90%; padding-right: 6px;">
+            
+            <ul id="notes">
+                {% if notes %}
+                  {% for note in notes %}
+                    <li onclick="getNoteView('{% url 'notes:detail' note.id %}'); select(this)">
+                        <div class="note-title">{{ note.title }}</div>
+                        <div class="note-body">{{ note.body | safe }}</div> 
+                        <div class="note-tags"><!-- {{ note.body | safe }} --></div> 
+                    </li>
+                  {% endfor %}
+                {% else %}
+                    <a href="#" onclick="create_()">Create new Note!</a>
+                {% endif %}
+            </ul>
+                
+        </div>
+        <div class="col-8" id="note-body">
+        {% if notes %}
+        <br><br><br><br><br><br><br>
+        <div class="create_btn" onclick="create_()">
+            <a href="#" class="text"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a><br>
+            <a href="#" class="text">Create a new note!</a>
+        </div>
+        {% endif %}
+        </div>
+    </div>
+    
+{% endblock %}

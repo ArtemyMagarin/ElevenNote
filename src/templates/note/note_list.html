@@ -1,0 +1,13 @@
+<ul id="notes">
+    {% if notes %}
+      {% for note in notes %}
+        <li onclick="getNoteView('{% url 'notes:detail' note.id %}'); select(this)">
+            <div class="note-title">{{ note.title }}</div>
+            <div class="note-body">{{ note.body | safe }}</div> 
+            <div class="note-tags"><!-- {{ note.body | safe }} --></div> 
+        </li>
+      {% endfor %}
+    {% else %}
+        <a href="#" onclick="create_()">Create new Note!</a>
+    {% endif %}
+</ul>
