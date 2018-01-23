@@ -15,10 +15,16 @@
             <ul id="notes">
                 {% if notes %}
                   {% for note in notes %}
-                    <li onclick="getNoteView('{% url 'notes:detail' note.id %}'); select(this)">
+                    <li onclick="getNoteView('{{ note.pk }}'); select(this)">
                         <div class="note-title">{{ note.title }}</div>
-                        <div class="note-body">{{ note.body | safe }}</div> 
-                        <div class="note-tags"><!-- {{ note.body | safe }} --></div> 
+                        <div class="note-body">{{ note.body | safe }}
+                            <div class="note-tags">
+                                {% for tag in note.tags.all %}
+                                    {{ tag.body }} 
+                                {% endfor %}
+                            </div> 
+                        </div> 
+                        
                     </li>
                   {% endfor %}
                 {% else %}
@@ -28,13 +34,13 @@
                 
         </div>
         <div class="col-8" id="note-body">
-        {% if notes %}
+        
         <br><br><br><br><br><br><br>
         <div class="create_btn" onclick="create_()">
             <a href="#" class="text"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a><br>
             <a href="#" class="text">Create a new note!</a>
         </div>
-        {% endif %}
+        
         </div>
     </div>
     

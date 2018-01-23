@@ -1,7 +1,7 @@
-var getNoteView = function(url) {
+var getNoteView = function(pk) {
 	$.ajax({
 	  async: true,
-	  url: url,
+	  url: "/notes/"+pk+"/",
 	  method: "get",
 	})
 	  .done(function( data ) {
@@ -30,8 +30,21 @@ var delete_ = function(pk) {
 	})
 	  .done(function( data ) {
 	    $("#notes li.selected").remove();
-	    $("#note-body").html("")
+	    $("#note-body").html('<br><br><br><br><br><br><br><div class="create_btn" onclick="create_()"><a href="#" class="text"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a><br><a href="#" class="text">Create a new note!</a></div>');
 	})
+
+	$.ajax({
+	  async: false,
+	  url: "/notes/notes/",
+	  method: "get",
+	})
+	  .done(function( data ) {
+	    $('#noteslist').html(data)
+	    if (pk) {
+	    	console.log(pk);
+		    $('#noteslist #note_'+pk).addClass("selected");
+		};
+	  })
 }
 
 var close_ = function(pk) {
@@ -63,31 +76,38 @@ var save_ = function(pk) {
 			    obj[item.name] = item.value;
 			    return obj;
 			}, {});
+
 	$.ajax({
-	  async: true,
+	  async: false,
 	  url: "/notes/"+pk+"/edit/",
 	  method: "post",
 	  data: data,
 	})
 	  .done(function( data ) {
-	    $('#note-body').html(data)
+	    $('#note-body').html(data);
+	    console.log('pk ', pk, 'from save_ .done');
 	  })
 	  .fail(function() {
 	    $('#note-body').html("<p>Error</p>")
 	  });
 
 	$.ajax({
-	  async: true,
+	  async: false,
 	  url: "/notes/notes/",
 	  method: "get",
 	})
 	  .done(function( data ) {
-	    $('#noteslist').html(data)
+	    $('#noteslist').html(data);
+	    if (pk) {
+	    	console.log(pk);
+		    $('#noteslist #note_'+pk).addClass("selected");
+		    $("#noteslist").scrollTop(0);
+		};
 	  })
 }
 
 
-var save_new_ = function(pk) {
+var save_new_ = function() {
 	$('textarea').each(function () {
 	   var $textarea = $(this);
 	   $textarea.val(CKEDITOR.instances['id_'+$textarea.attr('name')].getData());
@@ -97,26 +117,37 @@ var save_new_ = function(pk) {
 			    obj[item.name] = item.value;
 			    return obj;
 			}, {});
+
+	let pk = '';
+
 	$.ajax({
-	  async: true,
+	  async: false,
 	  url: "/notes/new/",
 	  method: "post",
 	  data: data,
 	})
 	  .done(function( data ) {
-	    $('#note-body').html(data)
+	    $('#note-body').html(data);
+	    pk = $('#note-body #note_id').val();
+	    console.log('pk ', pk, ' from save new');
+	    
 	  })
 	  .fail(function() {
 	    $('#note-body').html("<p>Error</p>")
 	  });
 
 	$.ajax({
-	  async: true,
+	  async: false,
 	  url: "/notes/notes/",
 	  method: "get",
 	})
 	  .done(function( data ) {
 	    $('#noteslist').html(data)
+	    if (pk) {
+	    	console.log(pk);
+		    $('#noteslist #note_'+pk).addClass("selected");
+		    $("#noteslist").scrollTop(0);
+		};
 	  })
 }
 
@@ -125,33 +156,35 @@ var create_ = function() {
 			    obj[item.name] = item.value;
 			    return obj;
 			}, {});
+
+	var pk = '';
+
 	$.ajax({
-	  async: true,
+	  async: false,
 	  url: "/notes/new/",
 	  method: "get",
 	  data: data,
 	})
 	  .done(function( data ) {
 	    $('#note-body').html(data);
+	    pk = $('#note-body #note_id').val();
 	  })
 	  .fail(function() {
 	    $('#note-body').html("<p>Error</p>")
 	  });
+
+	$.ajax({
+	  async: false,
+	  url: "/notes/notes/",
+	  method: "get",
+	})
+	  .done(function( data ) {
+	    $('#noteslist').html(data)
+	    if (pk) {
+	    	console.log(pk);
+		    $('#noteslist #note_'+pk).addClass("selected");
+		    $("#noteslist").scrollTop(0);
+		};
+	  })
 }
 
-// using jQuery
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}

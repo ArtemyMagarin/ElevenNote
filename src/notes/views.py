@@ -1,12 +1,14 @@
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 
-from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 
+from tags.models import Tag
 from .models import Note
 from .forms import NoteForm
 from .mixins import NoteMixin
@@ -106,4 +108,68 @@ class NoteDelete(LoginRequiredMixin, NoteMixin, DeleteView):
         self.object = self.get_object()
         self.check_user_or_403(self.object.owner)
         return super(NoteDelete, self).post(request, *args, **kwargs)
+
+class NotesByTag(LoginRequiredMixin, ListView):
+    model = Note
+    template_name = 'note/note_list.html'
+    context_object_name = 'notes'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NotesByTag, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        return Note.objects.filter(owner=self.request.user, tags__body=self.kwargs['tag']).order_by('-pub_date')
+
+
+class NoteAddTag(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        
+        user = request.user
+        tag = kwargs['tag']
+        pk = kwargs['pk']
+        bdtag = Tag.objects.filter(owner=user, body=tag)
+        note = Note.objects.get(pk=pk)
+        if not note:
+            raise ObjectDoesNotExist
+
+        if note.owner != request.user:
+            raise PermissionDenied
+
+        if bdtag:
+            note.tags.add(bdtag.first())
+            note.save()
+        else:
+            bdtag = Tag(owner=user, body=tag)
+            bdtag.save()
+            note.tags.add(bdtag)
+            note.save()
+
+        return HttpResponse("OK")
+
+
+class NoteDeleteTag(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        
+        user = request.user
+        tag = kwargs['tag']
+        pk = kwargs['pk']
+        bdtag = Tag.objects.get(owner=user, body=tag)
+        note = Note.objects.get(pk=pk)
+        if not note:
+            raise ObjectDoesNotExist
+        if not bdtag:
+            raise ObjectDoesNotExist
+
+        if note.owner != request.user:
+            raise PermissionDenied
+
+        
+        note.tags.remove(bdtag)
+        note.save()
+
+        return HttpResponse("OK")
+
+
+
 

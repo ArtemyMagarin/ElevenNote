@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import path, re_path
 
-from .views import NoteList, NoteDetail, NoteCreate, NoteUpdate, NoteDelete, NoteSimpleList
+from .views import NoteList, NoteDetail, NoteCreate, NoteUpdate, NoteDelete, NoteSimpleList, NoteAddTag, NoteDeleteTag
 app_name = 'notes'
 
 urlpatterns = [
@@ -10,4 +10,6 @@ urlpatterns = [
     path('<int:pk>/edit/', NoteUpdate.as_view(), name='update'),
     path('<int:pk>/delete/', NoteDelete.as_view(), name='delete'),
     path('new/', NoteCreate.as_view(), name='create'),
+    re_path(r'(?P<pk>\d+)/(?P<tag>[\w_-]+)/$', NoteAddTag.as_view(), name='addTag'),
+    re_path(r'(?P<pk>\d+)/(?P<tag>[\w_-]+)/delete/$', NoteDeleteTag.as_view(), name='deleteTag'),
 ]

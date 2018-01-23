@@ -4,6 +4,7 @@ DEBUG = True
 
 INSTALLED_APPS += [
     'django.contrib.postgres',
+    'django_extensions',
 ]
 
 DATABASES = {

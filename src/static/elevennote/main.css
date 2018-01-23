@@ -186,3 +186,8 @@ span.login {
   display: inline-block;
   vertical-align: middle;
 }
+
+a.deleteTagLink, a.deleteTagLink:hover, a.deleteTagLink:visited  {
+  color: white;
+  text-decoration: none;
+}

@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'notes',
     'accounts',
+    'tags',
     'django_wysiwyg',
     'ckeditor',
     'ckeditor_uploader',

@@ -1,0 +1,3 @@
+{% if tags %}
+[{% for tag in tags %}"{{tag.body}}",{% endfor %}]
+{% endif %}
