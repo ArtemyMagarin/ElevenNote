@@ -28,15 +28,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <form class="form-inline">
-      <p id="tags">
-      <a href="#" onclick="addTag(this, '{{ note.pk }}')">Add a tag...</a>
-        {% for tag in note.tags.all %}  
-        <span class="badge badge-pill badge-success"> {{ tag.body }} | <a href="#" class="deleteTagLink" onclick="deleteTag(this)">x</a></span>
-        {% endfor %}
-        
-      </p>
-        </form>
+
     </div>
   </div>
   <div class="row"> 

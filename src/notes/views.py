@@ -5,6 +5,8 @@ from django.views.generic import View, ListView, DetailView, CreateView, UpdateV
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 
+from django.db.models import Q
+
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 
@@ -173,3 +175,14 @@ class NoteDeleteTag(LoginRequiredMixin, View):
 
 
 
+class NoteSearch(LoginRequiredMixin, ListView):
+    model = Note
+    template_name = 'note/note_list.html'
+    context_object_name = 'notes'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NoteSearch, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        return Note.objects.filter(Q(owner=self.request.user), Q(title__contains=self.kwargs['q']) | Q(tags__body__contains=self.kwargs['q'])).distinct()

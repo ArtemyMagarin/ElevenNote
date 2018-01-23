@@ -7,7 +7,6 @@ from .models import Note
 class NoteForm(forms.ModelForm):
     title = forms.CharField()
     body = RichTextFormField()
-    tags = forms.CharField(widget=forms.TextInput(attrs={'data-role':'tagsinput'}))
 
     class Meta:
         model = Note

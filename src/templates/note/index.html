@@ -6,29 +6,33 @@
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "elevennote/note.js" %}"></script>
+<script type="text/javascript" src="{% static "elevennote/search.js" %}"></script>
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div id="noteslist" class="col-4 custom-scroll" style="overflow-y: scroll; height: 90%; padding-right: 6px;">
-            
+            <div class="row">
+                <div class="col">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for..." id="search">
+                    </div>
+                </div>
+            </div>
             <ul id="notes">
-                {% if notes %}
+               {% if notes %}
                   {% for note in notes %}
-                    <li onclick="getNoteView('{{ note.pk }}'); select(this)">
+                    <li  id="note_{{ note.pk }}" onclick="getNoteView('{{ note.pk }}'); select(this)">
                         <div class="note-title">{{ note.title }}</div>
-                        <div class="note-body">{{ note.body | safe }}
-                            <div class="note-tags">
-                                {% for tag in note.tags.all %}
-                                    {{ tag.body }} 
-                                {% endfor %}
-                            </div> 
+                        <div class="note-body">
+                            {% for tag in note.tags.all %}
+                                <span class="badge badge-pill badge-success">{{ tag.body }}</span>
+                            {% endfor %}
                         </div> 
-                        
                     </li>
                   {% endfor %}
                 {% else %}
-                    <a href="#" onclick="create_()">Create new Note!</a>
+                    <a href="#" onclick="create_()">Nothing there...</a>
                 {% endif %}
             </ul>
                 

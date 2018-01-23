@@ -39,7 +39,7 @@ var delete_ = function(pk) {
 	  method: "get",
 	})
 	  .done(function( data ) {
-	    $('#noteslist').html(data)
+	    $('#notes').html(data)
 	    if (pk) {
 	    	console.log(pk);
 		    $('#noteslist #note_'+pk).addClass("selected");
@@ -67,10 +67,7 @@ var edit_ = function(pk) {
 }
 
 var save_ = function(pk) {
-	$('textarea').each(function () {
-	   var $textarea = $(this);
-	   $textarea.val(CKEDITOR.instances['id_'+$textarea.attr('name')].getData());
-	});
+	$('textarea[name=body]').val(CKEDITOR.instances['id_body'].getData());
 
 	data = $('#data').serializeArray().reduce(function(obj, item) {
 			    obj[item.name] = item.value;
@@ -97,7 +94,7 @@ var save_ = function(pk) {
 	  method: "get",
 	})
 	  .done(function( data ) {
-	    $('#noteslist').html(data);
+	    $('#notes').html(data);
 	    if (pk) {
 	    	console.log(pk);
 		    $('#noteslist #note_'+pk).addClass("selected");
@@ -108,10 +105,7 @@ var save_ = function(pk) {
 
 
 var save_new_ = function() {
-	$('textarea').each(function () {
-	   var $textarea = $(this);
-	   $textarea.val(CKEDITOR.instances['id_'+$textarea.attr('name')].getData());
-	});	
+	$('textarea[name=body]').val(CKEDITOR.instances['id_body'].getData());
 
 	data = $('#data').serializeArray().reduce(function(obj, item) {
 			    obj[item.name] = item.value;
@@ -142,7 +136,7 @@ var save_new_ = function() {
 	  method: "get",
 	})
 	  .done(function( data ) {
-	    $('#noteslist').html(data)
+	    $('#notes').html(data)
 	    if (pk) {
 	    	console.log(pk);
 		    $('#noteslist #note_'+pk).addClass("selected");
@@ -179,7 +173,7 @@ var create_ = function() {
 	  method: "get",
 	})
 	  .done(function( data ) {
-	    $('#noteslist').html(data)
+	    $('#notes').html(data)
 	    if (pk) {
 	    	console.log(pk);
 		    $('#noteslist #note_'+pk).addClass("selected");

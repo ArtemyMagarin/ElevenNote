@@ -191,3 +191,7 @@ a.deleteTagLink, a.deleteTagLink:hover, a.deleteTagLink:visited  {
   color: white;
   text-decoration: none;
 }
+
+#tags span {
+  margin: 5px;
+}

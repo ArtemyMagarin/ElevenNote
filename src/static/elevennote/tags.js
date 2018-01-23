@@ -58,10 +58,9 @@ var sendTag = function(target) {
 	})
 	.done((d)=>{
 		console.log($("#tags"));
+		$("#tags .input-group").remove();
 		$("#tags span").first().before($("<span>").addClass("badge badge-pill badge-success").html(tag+' | <a href="#" class="deleteTagLink" onclick="deleteTag(this)">x</a>'));
-		$("#tag").remove();
-		$(target).remove();
-		$("#tags a[display=none]").css("display", "inline")
+		$("#tags a").css("display", "inline")
 	})
 }
 

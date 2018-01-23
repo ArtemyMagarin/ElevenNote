@@ -1,7 +1,12 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, register_converter
 
-from .views import NoteList, NoteDetail, NoteCreate, NoteUpdate, NoteDelete, NoteSimpleList, NoteAddTag, NoteDeleteTag
+from .views import NoteList, NoteDetail, NoteCreate, NoteUpdate, NoteDelete, NoteSimpleList, NoteAddTag, NoteDeleteTag, NoteSearch
 app_name = 'notes'
+
+from .converters import QueryConverter
+
+register_converter(QueryConverter, 'q')
+
 
 urlpatterns = [
     path('', NoteList.as_view(), name='index'),
@@ -12,4 +17,5 @@ urlpatterns = [
     path('new/', NoteCreate.as_view(), name='create'),
     re_path(r'(?P<pk>\d+)/(?P<tag>[\w_-]+)/$', NoteAddTag.as_view(), name='addTag'),
     re_path(r'(?P<pk>\d+)/(?P<tag>[\w_-]+)/delete/$', NoteDeleteTag.as_view(), name='deleteTag'),
+    re_path(r'search/(?P<q>[\w\d%-_ ]+)/$', NoteSearch.as_view(), name='search'),
 ]

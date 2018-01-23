@@ -1,18 +1,14 @@
-<ul id="notes">
-    {% if notes %}
-      {% for note in notes %}
-        <li  id="note_{{ note.pk }}" onclick="getNoteView('{{ note.pk }}'); select(this)">
-            <div class="note-title">{{ note.title }}</div>
-            <div class="note-body">{{ note.body | safe }}</div> 
-            <div class="note-tags">
-                {% for tag in note.tags.all %}
-                    {{ tag.body }}
-                {% endfor %}
-            </div> 
-        </li>
-      {% endfor %}
-    {% else %}
-        <a href="#" onclick="create_()">Create new Note!</a>
-    {% endif %}
-</ul>
-
+{% if notes %}
+  {% for note in notes %}
+    <li  id="note_{{ note.pk }}" onclick="getNoteView('{{ note.pk }}'); select(this)">
+        <div class="note-title">{{ note.title }}</div>
+        <div class="note-body">
+            {% for tag in note.tags.all %}
+                <span class="badge badge-pill badge-success">{{ tag.body }}</span>
+            {% endfor %}
+        </div> 
+    </li>
+  {% endfor %}
+{% else %}
+    <a href="#" onclick="create_()">Nothing there...</a>
+{% endif %}
