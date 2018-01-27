@@ -2,4 +2,4 @@
 __pycache__/
 migrations/
 #
-src/config/settings/settings.ini
+# src/config/settings/settings.ini

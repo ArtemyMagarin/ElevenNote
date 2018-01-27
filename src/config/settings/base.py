@@ -11,6 +11,14 @@ BASE_DIR = root()
 
 SECRET_KEY = config('SECRET_KEY')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'elevennote.am@gmail.com'
+EMAIL_HOST_PASSWORD = 'elevennoteapi'
+EMAIL_USE_TLS = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,10 +29,14 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'notes',
     'accounts',
-    'tags',
+    # 'tags',
     'django_wysiwyg',
     'ckeditor',
     'ckeditor_uploader',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
+    'api',
 ]
 
 
@@ -57,6 +69,18 @@ MIDDLEWARE = [
 
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+
+        # TODO: remove it later
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -76,6 +100,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+
+AUTH_USER_MODEL = 'accounts.User'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
