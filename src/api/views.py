@@ -39,7 +39,7 @@ class TagRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TagSerializer
 
     def get_queryset(self):
-        queryset = Tag.objects.filter(owner=self.request.user, pk=self.kwargs.get('pk', None))       
+        queryset = Tag.objects.filter(pk=self.kwargs.get('pk', None))       
         return queryset
 
     def perform_update(self, serializer):
@@ -191,7 +191,10 @@ class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
         user = self.get_object()
         if user != self.request.user:
             raise PermissionDenied()
-        serializer.save()
+
+        instanse = serializer.save()
+        instanse.set_password(instanse.password)
+        instanse.save()
 
 
 def activate(request, uidb64, token):

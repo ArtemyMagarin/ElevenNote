@@ -8,3 +8,4 @@ django-wysiwyg==0.8.0
 django-ckeditor==5.4.0
 djangorestframework==3.7.7
 django-filter==1.1.0
+django-cors-headers

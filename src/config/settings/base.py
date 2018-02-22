@@ -19,6 +19,8 @@ EMAIL_HOST_USER = 'elevennote.am@gmail.com'
 EMAIL_HOST_PASSWORD = 'elevennoteapi'
 EMAIL_USE_TLS = True
 
+CORS_ORIGIN_ALLOW_ALL=True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'api',
+    'corsheaders',
 ]
 
 
@@ -59,6 +62,7 @@ CKEDITOR_CONFIGS = {
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

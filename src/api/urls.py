@@ -23,7 +23,7 @@ urlpatterns = [
     re_path(r'book/(?P<pk>\d+)/$', BookRetrieveUpdateDestroyView.as_view(), name="book"),
 
     path('user/', UserCreateView.as_view(), name='usercreate'),
-    path('user/edit', UserRetrieveUpdateView.as_view(), name="user"), 
+    path('user/edit/', UserRetrieveUpdateView.as_view(), name="user"), 
     path('registered-user/', UserListView.as_view(), name="usersearch"),
 
     re_path(r'activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
